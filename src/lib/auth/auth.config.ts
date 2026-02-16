@@ -78,6 +78,8 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
  * NextAuth configuration
  */
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
+  basePath: '/api/auth',
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID!,
@@ -198,7 +200,7 @@ export const authConfig: NextAuthConfig = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
 };
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

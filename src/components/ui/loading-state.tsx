@@ -128,3 +128,13 @@ export function LoadingPage({ text = 'Loading...' }: { text?: string }) {
     </div>
   );
 }
+
+export function CardSkeleton() {
+  return (
+    <div className="p-4 rounded-lg border border-border space-y-3">
+      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-2/3" />
+    </div>
+  );
+}

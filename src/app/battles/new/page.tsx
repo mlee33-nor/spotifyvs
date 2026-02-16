@@ -121,7 +121,7 @@ export default function NewBattlePage() {
       } else if (sourceType === 'playlist' && playlistTracks) {
         title = `${playlists?.find(p => p.id === selectedPlaylistId)?.name || 'Playlist'} Battle`;
       } else if (sourceType === 'artist' && artistTracks) {
-        title = `${artistTracks[0]?.artists[0]?.name || 'Artist'} Battle`;
+        title = `${artistTracks[0]?.artistName || 'Artist'} Battle`;
       }
 
       // Generate initial bracket structure (to be used by battle-store)

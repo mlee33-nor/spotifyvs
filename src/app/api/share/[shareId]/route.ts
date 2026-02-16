@@ -10,10 +10,10 @@ import { sql } from 'drizzle-orm';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { shareId: string } }
+  { params }: { params: Promise<{ shareId: string }> }
 ) {
   try {
-    const shareId = params.shareId;
+    const { shareId } = await params;
 
     // Find shared content
     const [share] = await db

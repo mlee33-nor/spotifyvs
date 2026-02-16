@@ -202,10 +202,15 @@ export default function BattlesPage() {
             icon={Swords}
             title="No battles yet"
             description="Create your first battle to get started"
-            action={{
-              label: 'Create Battle',
-              onClick: () => router.push('/battles/new'),
-            }}
+            action={
+              <button
+                onClick={() => router.push('/battles/new')}
+                className="px-6 py-3 bg-spotify-green text-black font-semibold rounded-full hover:bg-spotify-green/90 inline-flex items-center gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                Create Battle
+              </button>
+            }
           />
         )}
       </div>

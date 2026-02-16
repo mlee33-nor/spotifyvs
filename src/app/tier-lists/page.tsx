@@ -109,6 +109,14 @@ function TierListCard({ tierList }: { tierList: TierList }) {
     .flat()
     .slice(0, 3);
 
+  const formatDate = (date: Date | string) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.02 }}

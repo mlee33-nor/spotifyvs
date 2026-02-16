@@ -40,7 +40,7 @@ export function TierListBuilder({
   const [activeId, setActiveId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
 
-  const { tiers, initializeTiers, moveTrack, getTierList, resetTiers } = useTierListStore();
+  const { tiers, unranked, initializeTiers, moveTrack, getTierList, resetTiers } = useTierListStore();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -61,6 +61,8 @@ export function TierListBuilder({
 
   // Initialize tiers on mount
   useEffect(() => {
+    initializeTiers(initialTracks, tierLabels);
+
     // Try to restore from localStorage if autoSaveKey is provided
     if (autoSaveKey) {
       const saved = localStorage.getItem(autoSaveKey);
@@ -69,15 +71,13 @@ export function TierListBuilder({
           const data = JSON.parse(saved);
           setTitle(data.title || '');
           setDescription(data.description || '');
-          initializeTiers(initialTracks, tierLabels, data.tiers);
-          return;
+          // Note: Restoring saved tiers is not currently supported by the store
+          // The tiers will be initialized with all tracks in unranked
         } catch (e) {
           console.error('Failed to restore tier list:', e);
         }
       }
     }
-
-    initializeTiers(initialTracks, tierLabels);
   }, [initialTracks, tierLabels, autoSaveKey]);
 
   // Auto-save to localStorage
@@ -101,7 +101,7 @@ export function TierListBuilder({
 
   function findTrack(id: string): Track | null {
     for (const tier of Object.values(tiers)) {
-      const track = tier.tracks.find(t => t.id === id);
+      const track = tier.find(t => t.id === id);
       if (track) return track;
     }
     return null;
@@ -112,7 +112,7 @@ export function TierListBuilder({
 
     for (const [tierLabel, tier] of Object.entries(tiers)) {
       if (id === `tier-${tierLabel}`) return tierLabel;
-      if (tier.tracks.some(t => t.id === id)) return tierLabel;
+      if (tier.some(t => t.id === id)) return tierLabel;
     }
 
     return null;
@@ -178,10 +178,11 @@ export function TierListBuilder({
   function handleSave() {
     if (!onSave) return;
 
+    const { tiers: tierData } = getTierList();
     onSave({
       title: title.trim() || 'Untitled Tier List',
       description: description.trim(),
-      tiers: getTierList(),
+      tiers: tierData,
     });
   }
 
@@ -209,7 +210,7 @@ export function TierListBuilder({
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [title, description, tiers]);
 
-  const unrankedTracks = tiers.unranked?.tracks || [];
+  const unrankedTracks = unranked || [];
 
   return (
     <div className="space-y-6">
@@ -264,7 +265,7 @@ export function TierListBuilder({
             <TierRow
               key={label}
               label={label}
-              tracks={tiers[label]?.tracks || []}
+              tracks={tiers[label] || []}
               isOver={overId === label}
             />
           ))}

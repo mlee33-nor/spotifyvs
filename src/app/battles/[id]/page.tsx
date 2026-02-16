@@ -257,7 +257,6 @@ export default function BattlePage() {
               <TrackCard
                 track={battle.state.winner}
                 variant="default"
-                showArtwork
                 onPlay={() => play(battle.state.winner!)}
               />
             </motion.div>
@@ -361,8 +360,7 @@ export default function BattlePage() {
                   <TrackCard
                     track={currentMatchup.track1}
                     variant="default"
-                    showArtwork
-                    onPlay={() => play(currentMatchup.track1)}
+                        onPlay={() => play(currentMatchup.track1)}
                   />
                 </motion.button>
               </motion.div>
@@ -398,8 +396,7 @@ export default function BattlePage() {
                   <TrackCard
                     track={currentMatchup.track2}
                     variant="default"
-                    showArtwork
-                    onPlay={() => play(currentMatchup.track2)}
+                        onPlay={() => play(currentMatchup.track2)}
                   />
                 </motion.button>
               </motion.div>

@@ -43,7 +43,7 @@ export default function BattlePage() {
   const [isVoting, setIsVoting] = useState(false);
   const [showWinner, setShowWinner] = useState(false);
 
-  const { playTrack, currentTrack, isPlaying, togglePlay } = useAudioStore();
+  const { play, currentTrack, isPlaying, pause, resume } = useAudioStore();
 
   // Fetch battle data
   useEffect(() => {
@@ -187,8 +187,12 @@ export default function BattlePage() {
       } else if (e.key === ' ') {
         e.preventDefault();
         // Toggle play for current track
-        if (currentTrack && isPlaying) {
-          togglePlay();
+        if (currentTrack) {
+          if (isPlaying) {
+            pause();
+          } else {
+            resume();
+          }
         }
       }
     };
@@ -254,7 +258,7 @@ export default function BattlePage() {
                 track={battle.state.winner}
                 variant="default"
                 showArtwork
-                onPlay={() => playTrack(battle.state.winner!)}
+                onPlay={() => play(battle.state.winner!)}
               />
             </motion.div>
 
@@ -358,7 +362,7 @@ export default function BattlePage() {
                     track={currentMatchup.track1}
                     variant="default"
                     showArtwork
-                    onPlay={() => playTrack(currentMatchup.track1)}
+                    onPlay={() => play(currentMatchup.track1)}
                   />
                 </motion.button>
               </motion.div>
@@ -395,7 +399,7 @@ export default function BattlePage() {
                     track={currentMatchup.track2}
                     variant="default"
                     showArtwork
-                    onPlay={() => playTrack(currentMatchup.track2)}
+                    onPlay={() => play(currentMatchup.track2)}
                   />
                 </motion.button>
               </motion.div>
